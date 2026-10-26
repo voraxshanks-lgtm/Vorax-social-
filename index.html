@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b16">
+<title>VORAX SOCIAL</title>
+
+<style>
+:root {
+  --bg:#090b16;
+  --panel:#141a2b;
+  --purple:#8b5cf6;
+  --cyan:#22d3ee;
+  --text:#f8fafc;
+  --muted:#aab4c8;
+  --gold:#fbbf24;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  padding:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:#0c1020;
+  border-bottom:1px solid #30384e;
+}
+.logo { font-size:21px;font-weight:900;letter-spacing:2px; }
+.logo span { color:var(--cyan); }
+.pill {
+  color:#c4b5fd;
+  font-size:12px;
+  border:1px solid #514080;
+  padding:6px 9px;
+  border-radius:20px;
+}
+.hero {
+  min-height:300px;
+  display:flex;
+  align-items:end;
+  padding:28px 20px;
+  background:
+    linear-gradient(0deg,#090b16 0%,#090b1699 50%,#090b1640 100%),
+    url("https://files.catbox.moe/zyxh2i.png") center/cover no-repeat;
+}
+.hero-content { max-width:750px;margin:auto;width:100%; }
+.eyebrow {
+  color:var(--cyan);
+  letter-spacing:3px;
+  font-size:12px;
+  font-weight:bold;
+}
+h1 { font-size:clamp(36px,8vw,64px);line-height:1.05;margin:12px 0; }
+h1 span { color:#a78bfa; }
+p { line-height:1.6; }
+.muted { color:var(--muted); }
+main { max-width:1000px;margin:auto;padding:16px; }
+.grid { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+.card {
+  background:var(--panel);
+  border:1px solid #30384e;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:16px;
+  min-width:0;
+}
+h2 { font-size:19px;margin:0 0 14px; }
+input {
+  display:block;
+  width:100%;
+  padding:13px;
+  margin:10px 0;
+  border:1px solid #3c4760;
+  border-radius:10px;
+  background:#090e1c;
+  color:white;
+  font-size:16px;
+}
+button {
+  padding:12px 15px;
+  border:0;
+  border-radius:10px;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  background:linear-gradient(110deg,var(--purple),#536dff);
+  cursor:pointer;
+}
+button:disabled { opacity:.55; }
+.actions { display:flex;flex-wrap:wrap;gap:9px;margin-top:12px; }
+.actions button { flex:1; }
+.secondary { background:#273149; }
+.status { font-size:13px;overflow-wrap:anywhere;min-height:20px;margin-top:10px; }
+.coins { font-size:35px;font-weight:900;color:var(--gold); }
+.notice {
+  background:#0b1222;
+  border:1px solid #30384e;
+  border-radius:12px;
+  padding:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.full { grid-column:1/-1; }
+.hidden { display:none!important; }
+footer { text-align:center;padding:25px;color:var(--muted);font-size:12px; }
+@media(max-width:650px) {
+  .grid { grid-template-columns:1fr; }
+  .full { grid-column:auto; }
+  header { padding:14px; }
+  .logo { font-size:17px; }
+  .hero { min-height:260px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">VORAX <span>SOCIAL</span></div>
+  <div class="pill" id="connection">Initialisation…</div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="eyebrow">THE SUPREMARCY VORAX EMPIRE</div>
+    <h1>Bienvenue dans<br><span>VORAX SOCIAL</span></h1>
+    <p>Une communauté. Une ambition. Un nouveau monde.</p>
+    <p class="muted">Rejoins tes membres et découvre les VORAX COINS.</p>
+  </div>
+</section>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>🔐 Ton compte</h2>
+      <input id="username" autocomplete="username" maxlength="24" placeholder="Ton pseudo (inscription)">
+      <input id="email" type="email" autocomplete="email" placeholder="Ton adresse e-mail">
+      <input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe (6 caractères minimum)">
+
+      <div class="actions">
+        <button id="signup">Créer un compte</button>
+        <button id="login" class="secondary">Connexion</button>
+      </div>
+      <div id="authStatus" class="status" role="status" aria-live="polite"></div>
+      <p class="muted" style="font-size:12px">
+        Une confirmation par e-mail peut être demandée lors de l'inscription.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>💰 Mon portefeuille</h2>
+      <div class="coins">◈ <span id="balance">—</span> VC</div>
+      <p id="walletStatus" class="muted">Connecte-toi pour afficher ton solde.</p>
+      <div class="notice">
+        Bonus d'inscription prévu : 100 VC.<br>
+        Invitation validée : 25 VC.<br>
+        Les récompenses sont contrôlées côté serveur.
+      </div>
+    </section>
+
+    <section class="card full">
+      <h2>👑 Espace membre</h2>
+      <p id="welcome" class="muted">Connecte-toi pour accéder à ton espace.</p>
+      <div class="actions">
+        <button id="refresh" class="secondary">Actualiser le solde</button>
+        <button id="logout" class="secondary">Déconnexion</button>
+      </div>
+      <div id="appStatus" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card full">
+      <h2>🌌 Le quartier général</h2>
+      <p><strong>La force de l'empire vient de son union.</strong></p>
+      <p class="muted">
+        Participe à la communauté, publie du contenu et invite de nouveaux membres.
+        Les systèmes de publications et de parrainage seront activés après leur connexion
+        à la base de données.
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer>VORAX SOCIAL © 2026 · Communauté et monnaie virtuelle VC</footer>
+
+<script type="module">
+import { createClient } from
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+/* Configuration Supabase publique */
+const SUPABASE_URL =
+  "https://aeospscyiadfpwnwhmas.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_7eEsZphY2FRKjU1SyRWmpA_UcEhRKfL";
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+function status(id, text, error = false) {
+  $(id).textContent = text;
+  $(id).style.color = error ? "#fb7185" : "#22d3ee";
+}
+
+function setMember(user) {
+  $("connection").textContent = user ? "Connecté" : "Non connecté";
+  $("welcome").textContent = user
+    ? "Bienvenue dans VORAX SOCIAL, " +
+      (user.user_metadata?.username || user.email || "membre") + "."
+    : "Connecte-toi pour accéder à ton espace.";
+  if (!user) {
+    $("balance").textContent = "—";
+    $("walletStatus").textContent = "Connecte-toi pour afficher ton solde.";
+  }
+}
+
+async function loadBalance() {
+  const { data: { user }, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !user) {
+    setMember(null);
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("vc_wallets")
+    .select("balance")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    status("walletStatus",
+      "Lecture impossible. Vérifie les politiques RLS de vc_wallets.",
+      true);
+    return;
+  }
+
+  if (!data) {
+    $("balance").textContent = "—";
+    status("walletStatus",
+      "Portefeuille introuvable : vérifie le déclencheur d'inscription.",
+      true);
+    return;
+  }
+
+  $("balance").textContent = String(data.balance);
+  status("walletStatus", "Solde synchronisé avec Supabase.");
+}
+
+$("signup").addEventListener("click", async () => {
+  const username = $("username").value.trim();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!username || !email || password.length < 6) {
+    status("authStatus",
+      "Entre un pseudo, un e-mail et un mot de passe d'au moins 6 caractères.",
+      true);
+    return;
+  }
+
+  $("signup").disabled = true;
+  status("authStatus", "Création du compte en cours…");
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { username } }
+    });
+
+    if (error) throw error;
+
+    if (data.session) {
+      setMember(data.user);
+      await loadBalance();
+    }
+
+    status("authStatus",
+      "Inscription envoyée. Vérifie ton e-mail si une confirmation est demandée.");
+  } catch (e) {
+    status("authStatus", "Erreur : " + e.message, true);
+  } finally {
+    $("signup").disabled = false;
+  }
+});
+
+$("login").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    status("authStatus", "Entre ton e-mail et ton mot de passe.", true);
+    return;
+  }
+
+  $("login").disabled = true;
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    setMember(data.user);
+    await loadBalance();
+    status("authStatus", "Connexion réussie.");
+  } catch (e) {
+    status("authStatus", "Erreur : " + e.message, true);
+  } finally {
+    $("login").disabled = false;
+  }
+});
+
+$("refresh").addEventListener("click", loadBalance);
+
+$("logout").addEventListener("click", async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    status("appStatus", "Erreur de déconnexion : " + error.message, true);
+    return;
+  }
+
+  setMember(null);
+  status("appStatus", "Déconnexion effectuée.");
+  status("authStatus", "");
+});
+
+async function init() {
+  $("connection").textContent = "Connexion à Supabase…";
+
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+
+    setMember(data.session?.user || null);
+
+    if (data.session?.user) await loadBalance();
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setMember(session?.user || null);
+      if (session?.user) setTimeout(loadBalance, 0);
+    });
+
+    $("connection").textContent = data.session
+      ? "Connecté"
+      : "Prêt à se connecter";
+
+    status("appStatus", "Connexion à Supabase initialisée.");
+  } catch (e) {
+    $("connection").textContent = "Erreur";
+    status("appStatus",
+      "Impossible de contacter Supabase. Vérifie internet et la configuration.",
+      true);
+  }
+}
+
+init();
+</script>
+</body>
+  </html>
+  
